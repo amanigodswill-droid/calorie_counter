@@ -1,10 +1,12 @@
 from django.shortcuts import redirect, render
+from django.utils import timezone
 
 from .forms import FoodItemForm
 from .models import FoodItem
 
 def food_list(request):
-    food_items = FoodItem.objects.order_by('-date_added', '-id')
+    today = timezone.localdate()
+    food_items = FoodItem.objects.filter(date_added=today).order_by('-id')
     total_calories = sum(
         food_item.calories for food_item in food_items
     )
@@ -42,3 +44,21 @@ def reset_calories(request):
         FoodItem.objects.all().delete()
 
     return redirect('food_list')
+
+def edit_food(request, food_id):
+    food_item = FoodItem.objects.get(id=food_id)
+
+    if request.method == 'POST':
+        form = FoodItemForm(request.POST, instance=food_item)
+
+        if form.is_valid():
+            form.save()
+            return redirect('food_list')
+    else:
+        form = FoodItemForm(instance=food_item)
+
+    return render(
+        request,
+        'calorie_tracker/edit_food.html',
+        {'form': form}
+    )

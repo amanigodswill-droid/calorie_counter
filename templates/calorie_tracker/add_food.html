@@ -2,12 +2,94 @@
 {% block title %}Add Food{% endblock %}
 {% block content %}
 
-<h2>Add Food</h2>
+<div class="max-w-2xl mx-auto">
 
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Add Food</button>
-</form>
-<a href="{% url 'food_list' %}">Back to Food List</a>
+    <div class="mb-8">
+        <h2 class="text-3xl font-bold text-gray-900">
+            Add Food
+        </h2>
+
+        <p class="text-gray-600 mt-2">
+            Add a food item and its calorie count to today's record.
+        </p>
+    </div>
+
+
+    <div class="bg-white rounded-xl shadow-md p-6">
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="bg-red-100 text-red-700 p-3 rounded-lg mb-4">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+
+            <div class="mb-5">
+
+                <label
+                    for="{{ form.name.id_for_label }}"
+                    class="block text-sm font-semibold text-gray-700 mb-2"
+                >
+                    Food Name
+                </label>
+
+                {{ form.name }}
+
+                {% if form.name.errors %}
+                    <p class="text-red-600 text-sm mt-1">
+                        {{ form.name.errors }}
+                    </p>
+                {% endif %}
+
+            </div>
+
+
+            <div class="mb-6">
+
+                <label
+                    for="{{ form.calories.id_for_label }}"
+                    class="block text-sm font-semibold text-gray-700 mb-2"
+                >
+                    Calories
+                </label>
+
+                {{ form.calories }}
+
+                {% if form.calories.errors %}
+                    <p class="text-red-600 text-sm mt-1">
+                        {{ form.calories.errors }}
+                    </p>
+                {% endif %}
+
+            </div>
+
+
+            <div class="flex flex-col sm:flex-row gap-3">
+
+                <button
+                    type="submit"
+                    class="bg-green-600 hover:bg-green-700 text-white font-semibold px-5 py-3 rounded-lg"
+                >
+                    Add Food
+                </button>
+
+                <a
+                    href="{% url 'food_list' %}"
+                    class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold px-5 py-3 rounded-lg text-center"
+                >
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
 {% endblock %}
