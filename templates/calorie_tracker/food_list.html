@@ -1,0 +1,61 @@
+{% extends "calorie_tracker/base.html" %}
+
+{% block title %}My Calories{% endblock %}
+
+{% block content %}
+
+<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+    <div>
+        <h2 class="text-3xl font-bold text-gray-900">Today's Calories</h2>
+        <p class="text-gray-600 mt-1">Keep track of what you eat throughout the day.</p>
+    </div>
+
+    <a href="{% url 'add_food' %}"class="bg-green-600 hover:bg-green-700 text-white font-semibold px-5 py-3 rounded-lg shadow">+ Add Food</a>
+</div>
+
+
+<div class="bg-white rounded-xl shadow-md p-6 mb-8">
+    <p class="text-gray-500 text-sm">Total Calories</p>
+    <p class="text-4xl font-bold text-green-600 mt-2">{{ total_calories }}</p>
+    <p class="text-gray-500 mt-1">calories consumed today</p>
+</div>
+
+<div class="bg-white rounded-xl shadow-md p-6">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
+        <h2 class="text-2xl font-bold">Food Items</h2>
+        <form method="POST" action="{% url 'reset_calories' %}">
+            {% csrf_token %}
+            <button type="submit"class="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg">Reset Daily Calories</button>
+        </form>]
+    </div>
+
+    {% if food_items %}
+        <div class="space-y-3">
+            {% for food in food_items %}
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border rounded-lg p-4">
+                    <div>
+                        <p class="font-semibold text-lg">{{ food.name }}</p>
+                        <p class="text-gray-500">{{ food.calories }} calories</p>
+                    </div>
+
+
+                    <form method="POST" action="{% url 'delete_food' food.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="bg-red-100 hover:bg-red-200 text-red-700 font-medium px-4 py-2 rounded-lg">Delete</button>
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+
+    {% else %}
+
+        <div class="text-center py-10">
+            <p class="text-gray-500 text-lg">No food items have been added yet.</p>
+            <a  href="{% url 'add_food' %}" class="inline-block mt-4 bg-green-600 hover:bg-green-700 text-white font-semibold px-5 py-3 rounded-lg">Add Your First Food</a>
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
