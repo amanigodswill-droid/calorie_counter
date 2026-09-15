@@ -41,7 +41,8 @@ def delete_food(request, food_id):
 
 def reset_calories(request):
     if request.method == 'POST':
-        FoodItem.objects.all().delete()
+        today = timezone.localdate()
+        FoodItem.objects.filter(date_added=today).delete()
 
     return redirect('food_list')
 

@@ -1,0 +1,9 @@
+asgiref==3.12.1
+Django==3.2.25
+gunicorn==26.2.0
+psycopg2-binary==2.9.13
+python-dotenv==1.2.3
+pytz==2026.3.post1
+sqlparse==0.6.0
+typing_extensions==4.16.0
+whitenoise==6.12.0
